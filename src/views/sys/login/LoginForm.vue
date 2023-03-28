@@ -25,24 +25,24 @@
       />
     </FormItem>
 
-    <ARow class="enter-x">
+    <!--     <ARow class="enter-x">
       <ACol :span="12">
-        <FormItem>
-          <!-- No logic, you need to deal with it yourself -->
-          <Checkbox v-model:checked="rememberMe" size="small">
+        <FormItem> -->
+    <!-- No logic, you need to deal with it yourself -->
+    <!--           <Checkbox v-model:checked="rememberMe" size="small">
             {{ t('sys.login.rememberMe') }}
           </Checkbox>
         </FormItem>
       </ACol>
       <ACol :span="12">
-        <FormItem :style="{ 'text-align': 'right' }">
-          <!-- No logic, you need to deal with it yourself -->
-          <Button type="link" size="small" @click="setLoginState(LoginStateEnum.RESET_PASSWORD)">
+        <FormItem :style="{ 'text-align': 'right' }"> -->
+    <!-- No logic, you need to deal with it yourself -->
+    <!-- <Button type="link" size="small" @click="setLoginState(LoginStateEnum.RESET_PASSWORD)">
             {{ t('sys.login.forgetPassword') }}
           </Button>
         </FormItem>
       </ACol>
-    </ARow>
+    </ARow> -->
 
     <FormItem class="enter-x">
       <Button type="primary" size="large" block @click="handleLogin" :loading="loading">
@@ -52,7 +52,7 @@
         {{ t('sys.login.registerButton') }}
       </Button> -->
     </FormItem>
-    <ARow class="enter-x">
+    <!-- <ARow class="enter-x">
       <ACol :md="8" :xs="24">
         <Button block @click="setLoginState(LoginStateEnum.MOBILE)">
           {{ t('sys.login.mobileSignInFormTitle') }}
@@ -68,30 +68,30 @@
           {{ t('sys.login.registerButton') }}
         </Button>
       </ACol>
-    </ARow>
+    </ARow> -->
 
-    <Divider class="enter-x">{{ t('sys.login.otherSignIn') }}</Divider>
+    <!-- <Divider class="enter-x">{{ t('sys.login.otherSignIn') }}</Divider> -->
 
-    <div class="flex justify-evenly enter-x" :class="`${prefixCls}-sign-in-way`">
+    <!-- <div class="flex justify-evenly enter-x" :class="`${prefixCls}-sign-in-way`">
       <GithubFilled />
       <WechatFilled />
       <AlipayCircleFilled />
       <GoogleCircleFilled />
       <TwitterCircleFilled />
-    </div>
+    </div> -->
   </Form>
 </template>
 <script lang="ts" setup>
   import { reactive, ref, unref, computed } from 'vue';
 
-  import { Checkbox, Form, Input, Row, Col, Button, Divider } from 'ant-design-vue';
-  import {
+  import { Form, Input, Button } from 'ant-design-vue';
+  /*   import {
     GithubFilled,
     WechatFilled,
     AlipayCircleFilled,
     GoogleCircleFilled,
     TwitterCircleFilled,
-  } from '@ant-design/icons-vue';
+  } from '@ant-design/icons-vue'; */
   import LoginFormTitle from './LoginFormTitle.vue';
 
   import { useI18n } from '/@/hooks/web/useI18n';
@@ -100,10 +100,10 @@
   import { useUserStore } from '/@/store/modules/user';
   import { LoginStateEnum, useLoginState, useFormRules, useFormValid } from './useLogin';
   import { useDesign } from '/@/hooks/web/useDesign';
-  //import { onKeyStroke } from '@vueuse/core';
+  // import { onKeyStroke } from '@vueuse/core';
 
-  const ACol = Col;
-  const ARow = Row;
+  // const ACol = Col;
+  // const ARow = Row;
   const FormItem = Form.Item;
   const InputPassword = Input.Password;
   const { t } = useI18n();
@@ -111,12 +111,12 @@
   const { prefixCls } = useDesign('login');
   const userStore = useUserStore();
 
-  const { setLoginState, getLoginState } = useLoginState();
+  const { getLoginState } = useLoginState();
   const { getFormRules } = useFormRules();
 
   const formRef = ref();
   const loading = ref(false);
-  const rememberMe = ref(false);
+  // const rememberMe = ref(false);
 
   const formData = reactive({
     account: 'vben',
