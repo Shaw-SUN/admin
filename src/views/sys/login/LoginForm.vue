@@ -8,10 +8,10 @@
     v-show="getShow"
     @keypress.enter="handleLogin"
   >
-    <FormItem name="account" class="enter-x">
+    <FormItem name="username" class="enter-x">
       <Input
         size="large"
-        v-model:value="formData.account"
+        v-model:value="formData.username"
         :placeholder="t('sys.login.userName')"
         class="fix-auto-fill"
       />
@@ -23,6 +23,15 @@
         v-model:value="formData.password"
         :placeholder="t('sys.login.password')"
       />
+    </FormItem>
+    <!-- 图像验证码 -->
+    <FormItem name="imgCode" class="enter-x">
+      <ARow :gutter="16">
+        <ACol>
+          <Input size="large" v-model:value="formData.imgCode" :placeholder="'验证码'" />
+        </ACol>
+        <ACol @click="getCodeImg"><img :src="codeImg" alt="" /></ACol>
+      </ARow>
     </FormItem>
 
     <!--     <ARow class="enter-x">
@@ -52,13 +61,16 @@
         {{ t('sys.login.registerButton') }}
       </Button> -->
     </FormItem>
-    <!-- <ARow class="enter-x">
-      <ACol :md="8" :xs="24">
+    <Divider class="enter-x">{{ t('sys.login.otherSignIn') }}</Divider>
+    <ARow class="enter-x">
+      <ACol :span="24">
         <Button block @click="setLoginState(LoginStateEnum.MOBILE)">
           {{ t('sys.login.mobileSignInFormTitle') }}
         </Button>
       </ACol>
-      <ACol :md="8" :xs="24" class="!my-2 !md:my-0 xs:mx-0 md:mx-2">
+    </ARow>
+  </Form>
+  <!-- <ACol :md="8" :xs="24" class="!my-2 !md:my-0 xs:mx-0 md:mx-2">
         <Button block @click="setLoginState(LoginStateEnum.QR_CODE)">
           {{ t('sys.login.qrSignInFormTitle') }}
         </Button>
@@ -67,24 +79,20 @@
         <Button block @click="setLoginState(LoginStateEnum.REGISTER)">
           {{ t('sys.login.registerButton') }}
         </Button>
-      </ACol>
-    </ARow> -->
+      </ACol> -->
 
-    <!-- <Divider class="enter-x">{{ t('sys.login.otherSignIn') }}</Divider> -->
-
-    <!-- <div class="flex justify-evenly enter-x" :class="`${prefixCls}-sign-in-way`">
+  <!-- <div class="flex justify-evenly enter-x" :class="`${prefixCls}-sign-in-way`">
       <GithubFilled />
       <WechatFilled />
       <AlipayCircleFilled />
       <GoogleCircleFilled />
       <TwitterCircleFilled />
     </div> -->
-  </Form>
 </template>
 <script lang="ts" setup>
-  import { reactive, ref, unref, computed } from 'vue';
+  import { reactive, ref, unref, computed, onMounted } from 'vue';
 
-  import { Form, Input, Button } from 'ant-design-vue';
+  import { Form, Input, Button, Col, Row, Divider } from 'ant-design-vue';
   /*   import {
     GithubFilled,
     WechatFilled,
@@ -101,9 +109,14 @@
   import { LoginStateEnum, useLoginState, useFormRules, useFormValid } from './useLogin';
   import { useDesign } from '/@/hooks/web/useDesign';
   // import { onKeyStroke } from '@vueuse/core';
+  import { getImgCode } from '/@/api/sys/user';
 
-  // const ACol = Col;
-  // const ARow = Row;
+  onMounted(() => {
+    getCodeImg();
+  });
+
+  const ACol = Col;
+  const ARow = Row;
   const FormItem = Form.Item;
   const InputPassword = Input.Password;
   const { t } = useI18n();
@@ -111,16 +124,19 @@
   const { prefixCls } = useDesign('login');
   const userStore = useUserStore();
 
-  const { getLoginState } = useLoginState();
+  const { setLoginState, getLoginState } = useLoginState();
   const { getFormRules } = useFormRules();
 
   const formRef = ref();
   const loading = ref(false);
+  const codeImg = ref('');
   // const rememberMe = ref(false);
 
   const formData = reactive({
-    account: 'vben',
+    username: 'admin',
     password: '123456',
+    imgCode: '',
+    uuid: '',
   });
 
   const { validForm } = useFormValid(formRef);
@@ -136,13 +152,15 @@
       loading.value = true;
       const userInfo = await userStore.login({
         password: data.password,
-        username: data.account,
+        username: data.username,
+        code: data.imgCode,
+        uuid: formData.uuid,
         mode: 'none', //不要默认的错误提示
       });
       if (userInfo) {
         notification.success({
           message: t('sys.login.loginSuccessTitle'),
-          description: `${t('sys.login.loginSuccessDesc')}: ${userInfo.realName}`,
+          description: `${t('sys.login.loginSuccessDesc')}: ${userInfo.name}`,
           duration: 3,
         });
       }
@@ -155,5 +173,11 @@
     } finally {
       loading.value = false;
     }
+  }
+  function getCodeImg() {
+    getImgCode().then((res) => {
+      codeImg.value = res.image;
+      formData.uuid = res.uuid;
+    });
   }
 </script>

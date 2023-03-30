@@ -31,11 +31,10 @@ export interface ErrorLogInfo {
 }
 
 export interface UserInfo {
-  userId: string | number;
+  id: number;
   username: string;
-  realName: string;
-  avatar: string;
-  desc?: string;
+  name: string;
+  avatarUrl: string;
   homePath?: string;
   roles: RoleInfo[];
 }
