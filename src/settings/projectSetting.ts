@@ -15,7 +15,7 @@ import { primaryColor } from '../../build/config/themeConfig';
 // ! You need to clear the browser cache after the change
 const setting: ProjectConfig = {
   // Whether to show the configuration button
-  showSettingButton: true,
+  showSettingButton: false,
 
   // Whether to show the theme switch button
   showDarkModeToggle: true,
@@ -64,15 +64,15 @@ const setting: ProjectConfig = {
     // theme
     theme: ThemeEnum.LIGHT,
     // Whether to enable the lock screen function
-    useLockPage: true,
+    useLockPage: false,
     // Whether to show the full screen button
-    showFullScreen: true,
+    showFullScreen: false,
     // Whether to show the document button
-    showDoc: true,
+    showDoc: false,
     // Whether to show the notification button
-    showNotice: true,
+    showNotice: false,
     // Whether to display the menu search
-    showSearch: true,
+    showSearch: false,
   },
 
   // Menu configuration
@@ -151,7 +151,7 @@ const setting: ProjectConfig = {
   },
 
   // Whether to enable KeepAlive cache is best to close during development, otherwise the cache needs to be cleared every time
-  openKeepAlive: true,
+  openKeepAlive: false,
 
   // Automatic screen lock time, 0 does not lock the screen. Unit minute default 0
   lockTime: 0,

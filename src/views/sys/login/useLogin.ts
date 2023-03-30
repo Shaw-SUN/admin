@@ -35,7 +35,7 @@ export function useFormValid<T extends Object = any>(formRef: Ref<FormInstance>)
     const form = unref(formRef);
     return form?.validate ?? ((_nameList?: NamePath) => Promise.resolve());
   });
-  
+
   async function validForm() {
     const form = unref(formRef);
     if (!form) return;
@@ -49,8 +49,9 @@ export function useFormValid<T extends Object = any>(formRef: Ref<FormInstance>)
 export function useFormRules(formData?: Recordable) {
   const { t } = useI18n();
 
-  const getAccountFormRule = computed(() => createRule(t('sys.login.accountPlaceholder')));
+  const getUsernameFormRule = computed(() => createRule(t('sys.login.accountPlaceholder')));
   const getPasswordFormRule = computed(() => createRule(t('sys.login.passwordPlaceholder')));
+  const getImgCodeFormRule = computed(() => createRule(t('请输入验证码')));
   const getSmsFormRule = computed(() => createRule(t('sys.login.smsPlaceholder')));
   const getMobileFormRule = computed(() => createRule(t('sys.login.mobilePlaceholder')));
 
@@ -71,8 +72,9 @@ export function useFormRules(formData?: Recordable) {
   };
 
   const getFormRules = computed((): { [k: string]: ValidationRule | ValidationRule[] } => {
-    const accountFormRule = unref(getAccountFormRule);
+    const usernameFormRule = unref(getUsernameFormRule);
     const passwordFormRule = unref(getPasswordFormRule);
+    const imgCodeFormRule = unref(getImgCodeFormRule);
     const smsFormRule = unref(getSmsFormRule);
     const mobileFormRule = unref(getMobileFormRule);
 
@@ -84,7 +86,7 @@ export function useFormRules(formData?: Recordable) {
       // register form rules
       case LoginStateEnum.REGISTER:
         return {
-          account: accountFormRule,
+          username: usernameFormRule,
           password: passwordFormRule,
           confirmPassword: [
             { validator: validateConfirmPassword(formData?.password), trigger: 'change' },
@@ -96,7 +98,7 @@ export function useFormRules(formData?: Recordable) {
       // reset password form rules
       case LoginStateEnum.RESET_PASSWORD:
         return {
-          account: accountFormRule,
+          username: usernameFormRule,
           ...mobileRule,
         };
 
@@ -107,8 +109,9 @@ export function useFormRules(formData?: Recordable) {
       // login form rules
       default:
         return {
-          account: accountFormRule,
+          username: usernameFormRule,
           password: passwordFormRule,
+          imgCode: imgCodeFormRule,
         };
     }
   });

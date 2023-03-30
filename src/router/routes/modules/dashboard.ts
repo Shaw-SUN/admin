@@ -17,7 +17,7 @@ const dashboard: AppRouteModule = {
     {
       path: 'workbench',
       name: 'Workbench',
-      component: () => import('/@/views/dashboard/workbench/index.vue'),
+      component: () => import('/@/views/dashboard/Workbench.vue'),
       meta: {
         title: t('routes.dashboard.workbench'),
       },

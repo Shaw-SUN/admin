@@ -4,11 +4,12 @@ import { LoginParams, LoginResultModel, GetUserInfoModel } from './model/userMod
 import { ErrorMessageMode } from '/#/axios';
 
 enum Api {
-  Login = '/login',
-  Logout = '/logout',
-  GetUserInfo = '/getUserInfo',
+  Login = '/admin/login',
+  Logout = '/admin/logout',
+  GetUserInfo = '/admin/',
   GetPermCode = '/getPermCode',
   TestRetry = '/testRetry',
+  GetImgCode = '/admin/login/image-code',
 }
 
 /**
@@ -29,8 +30,11 @@ export function loginApi(params: LoginParams, mode: ErrorMessageMode = 'modal') 
 /**
  * @description: getUserInfo
  */
-export function getUserInfo() {
-  return defHttp.get<GetUserInfoModel>({ url: Api.GetUserInfo }, { errorMessageMode: 'none' });
+export function getUserInfo(id: number) {
+  return defHttp.get<GetUserInfoModel>(
+    { url: Api.GetUserInfo + `${id}` },
+    { errorMessageMode: 'none' },
+  );
 }
 
 export function getPermCode() {
@@ -38,7 +42,7 @@ export function getPermCode() {
 }
 
 export function doLogout() {
-  return defHttp.get({ url: Api.Logout });
+  return defHttp.post({ url: Api.Logout });
 }
 
 export function testRetry() {
@@ -52,4 +56,7 @@ export function testRetry() {
       },
     },
   );
+}
+export function getImgCode() {
+  return defHttp.get({ url: Api.GetImgCode });
 }

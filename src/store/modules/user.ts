@@ -91,20 +91,20 @@ export const useUserStore = defineStore({
       try {
         const { goHome = true, mode, ...loginParams } = params;
         const data = await loginApi(loginParams, mode);
-        const { token } = data;
-
+        const { token, tokenPrefix, id } = data;
         // save token
-        this.setToken(token);
-        return this.afterLoginAction(goHome);
+        this.setToken(tokenPrefix + token);
+        return this.afterLoginAction(id, goHome);
       } catch (error) {
         return Promise.reject(error);
       }
     },
-    async afterLoginAction(goHome?: boolean): Promise<GetUserInfoModel | null> {
+    async afterLoginAction(id: number, goHome?: boolean): Promise<GetUserInfoModel | null> {
       if (!this.getToken) return null;
-      // get user info
-      const userInfo = await this.getUserInfoAction();
-
+      // get user info 接口
+      const userInfo = await this.getUserInfoAction(id);
+      // const {avatarUrl, userId, name} = UInfo
+      // const userInfo = { ...UInfo };
       const sessionTimeout = this.sessionTimeout;
       if (sessionTimeout) {
         this.setSessionTimeout(false);
@@ -122,17 +122,17 @@ export const useUserStore = defineStore({
       }
       return userInfo;
     },
-    async getUserInfoAction(): Promise<UserInfo | null> {
+    async getUserInfoAction(id: number): Promise<UserInfo | null> {
       if (!this.getToken) return null;
-      const userInfo = await getUserInfo();
-      const { roles = [] } = userInfo;
-      if (isArray(roles)) {
-        const roleList = roles.map((item) => item.value) as RoleEnum[];
-        this.setRoleList(roleList);
-      } else {
-        userInfo.roles = [];
-        this.setRoleList([]);
-      }
+      const userInfo = await getUserInfo(id);
+      // const { roles = [] } = userInfo;
+      // if (isArray(roles)) {
+      //   const roleList = roles.map((item) => item.value) as RoleEnum[];
+      //   this.setRoleList(roleList);
+      // } else {
+      //   userInfo.roles = [];
+      //   this.setRoleList([]);
+      // }
       this.setUserInfo(userInfo);
       return userInfo;
     },
