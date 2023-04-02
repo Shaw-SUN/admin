@@ -20,6 +20,7 @@
   import { defineComponent } from 'vue';
   import { BasicTable, useTable, FormProps } from '/@/components/Table';
   import { BasicColumn } from '/@/components/Table/src/types/table';
+  import { getAdminList } from '/@/api/manage/admin';
 
   export default defineComponent({
     components: { BasicTable },
@@ -76,7 +77,7 @@
       };
 
       const [registerTable] = useTable({
-        //api: getOrderList,
+        api: getAdminList,
         striped: false,
         showIndexColumn: false,
         useSearchForm: true,
