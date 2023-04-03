@@ -32,8 +32,8 @@ type AdminDetailItem = {
   id: string;
 };
 
-export const getAdminDetail = (id: string) => {
-  return defHttp.get<AdminDetailItem>({ url: Api.Detail + id });
+export const getAdminDetail = (id: number) => {
+  return defHttp.get<AdminDetailItem>({ url: Api.Detail + `${id}` });
 };
 
 //ChangeState

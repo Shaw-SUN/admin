@@ -22,6 +22,22 @@ const userManage: AppRouteModule = {
       },
     },
     {
+      path: 'role',
+      name: 'RoleManage',
+      component: () => import('/@/views/manage/RoleManage.vue'),
+      meta: {
+        title: '角色管理',
+      },
+    },
+    {
+      path: 'department',
+      name: 'DepartmentManage',
+      component: () => import('/@/views/manage/DepartmentManage.vue'),
+      meta: {
+        title: '部门管理',
+      },
+    },
+    {
       path: 'user',
       name: 'UserManage',
       component: () => import('/@/views/manage/UserManage.vue'),

@@ -24,11 +24,11 @@ export const getUserList = (params: UserListParams) => {
 };
 
 //ChangeState
-export const changeUserState = (id: string) => {
-  return defHttp.put({ url: Api.ChangeState + id });
+export const changeUserState = (id: number) => {
+  return defHttp.put({ url: Api.ChangeState + `${id}` });
 };
 
 //delete
-export const deleteUser = (id: string) => {
-  return defHttp.delete({ url: Api.Delete + id });
+export const deleteUser = (id: number) => {
+  return defHttp.delete({ url: Api.Delete + `${id}` });
 };
