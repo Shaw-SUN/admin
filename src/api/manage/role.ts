@@ -35,10 +35,7 @@ export const deleteRole = (id: number) => {
 };
 
 //create
-type RoleCreateParams = {
-  title: string;
-};
 
-export const createRole = (params: RoleCreateParams) => {
-  return defHttp.post<RoleListResult>({ url: Api.Create, params });
+export const createRole = (params) => {
+  return defHttp.post({ url: Api.Create, params });
 };

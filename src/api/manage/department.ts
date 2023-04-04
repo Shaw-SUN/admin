@@ -32,11 +32,7 @@ export const deleteDepartment = (id: number) => {
   return defHttp.delete({ url: Api.Delete + `${id}` });
 };
 
-//create
-type DepartmentCreateParams = {
-  title: string;
-};
-
-export const createDepartment = (params: DepartmentCreateParams) => {
-  return defHttp.post<DepartmentListResult>({ url: Api.Create, params });
+// create
+export const createDepartment = (params) => {
+  return defHttp.post({ url: Api.Create, params });
 };

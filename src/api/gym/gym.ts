@@ -3,8 +3,8 @@ import { BasicPageParams, BasicFetchResult } from '/@/api/model/baseModel';
 
 enum Api {
   List = '/gym/list', //get
-  ChangeState = '/gym/state/', //put id
-  Delete = '/gym/', //delete id
+  Detail = '/gym/', //get id
+  Audit = '/gym/audit', //post
 }
 
 // List
@@ -24,12 +24,25 @@ export const getGymList = (params: GymListParams) => {
   return defHttp.get<GymListResult>({ url: Api.List, params });
 };
 
-//ChangeState
-export const changeGymState = (id: number) => {
-  return defHttp.put({ url: Api.ChangeState + `${id}` });
+// Detail
+// 返回
+type GymDetailItem = {
+  name: string;
+  address: string;
+  phone: string;
+  time: string;
+  area: string;
+  content: string;
+  logoUrl: string | [];
+  detailUrl: string | [];
+  auditUrl: string | [];
 };
 
-//delete
-export const deleteGym = (id: number) => {
-  return defHttp.delete({ url: Api.Delete + `${id}` });
+export const getGymDetail = (id: number) => {
+  return defHttp.get<GymDetailItem>({ url: Api.Detail + `${id}` });
+};
+
+//audit
+export const auditGym = (params) => {
+  return defHttp.post({ url: Api.Audit, params });
 };

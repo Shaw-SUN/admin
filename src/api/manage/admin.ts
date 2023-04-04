@@ -33,7 +33,14 @@ export const getAdminList = (params: AdminListParams) => {
 // 返回
 type AdminDetailItem = {
   id: string;
-  //...
+  username: string;
+  name: string;
+  password: string;
+  avatarUrl: string;
+  deptName: string;
+  deptId: string;
+  roleId: string;
+  roleName: string;
 };
 
 export const getAdminDetail = (id: number) => {
@@ -51,24 +58,13 @@ export const deleteAdmin = (id: number) => {
 };
 
 //create
-
-type AdminCreateParams = {
-  id?: number;
-  username: string;
-  password: string;
-  avatarUrl: string;
-  name: string;
-  deptId: string;
-  roleId: string;
-};
-
-export const createAdmin = (params: AdminCreateParams) => {
-  return defHttp.post<AdminListResult>({ url: Api.Create, params });
+export const createAdmin = (params) => {
+  return defHttp.post({ url: Api.Create, params });
 };
 
 //edit
-export const editAdmin = (params: AdminCreateParams) => {
-  return defHttp.put<AdminListResult>({ url: Api.Edit, params });
+export const editAdmin = (params) => {
+  return defHttp.put({ url: Api.Edit, params });
 };
 
 //departments

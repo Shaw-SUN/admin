@@ -15,16 +15,21 @@
       </template>
       <template #action="{ record }">
         <span style="color: green" v-if="record.state == 1">已通过</span>
-        <a-button color="warning" type="link" v-if="record.state == 2"><u>待审核</u></a-button>
+        <a-button color="warning" type="link" v-if="record.state == 2" @click="open(record.id)"
+          ><u>待审核</u></a-button
+        >
         <span style="color: red" v-else-if="record.state == 3">已驳回</span>
       </template>
     </BasicTable>
+    <Modal @register="registerModal" @visible-change="handleClose" />
   </div>
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
   import { BasicTable, useTable, FormProps } from '/@/components/Table';
   import { BasicColumn } from '/@/components/Table/src/types/table';
+  import { useModal } from '/@/components/Modal';
+  import Modal from './components/Approve.vue';
   import { formatToDateTime } from '/@/utils/dateUtil';
 
   import { getGymList } from '/@/api/gym/gym';
@@ -33,7 +38,7 @@
   //const { notification } = useMessage();
 
   export default defineComponent({
-    components: { BasicTable },
+    components: { BasicTable, Modal },
     setup() {
       // 表头
       const columns: BasicColumn[] = [
@@ -91,7 +96,7 @@
         ],
       };
 
-      const [registerTable] = useTable({
+      const [registerTable, { reload }] = useTable({
         api: getGymList,
         striped: false,
         showIndexColumn: false,
@@ -106,10 +111,24 @@
           slots: { customRender: 'action' },
         },
       });
+      // 弹窗
+      const [registerModal, { openModal }] = useModal();
+      // 新增/编辑
+      const open = (id: number) => {
+        openModal(true, { id: id });
+      };
+      const handleClose = (visible: boolean) => {
+        if (!visible) {
+          reload();
+        }
+      };
 
       return {
         registerTable,
         formatToDateTime,
+        registerModal,
+        open,
+        handleClose,
       };
     },
   });

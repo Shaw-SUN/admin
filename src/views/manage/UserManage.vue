@@ -80,7 +80,7 @@
           {
             field: 'word',
             component: 'Input',
-            label: '搜索关键词',
+            label: '姓名',
             colProps: {
               span: 10,
             },

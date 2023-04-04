@@ -55,7 +55,7 @@
         />
       </template>
     </BasicTable>
-    <Modal @register="registerModal" />
+    <Modal @register="registerModal" @visible-change="handleClose" />
   </div>
 </template>
 <script lang="ts">
@@ -64,7 +64,7 @@
   import { BasicColumn } from '/@/components/Table/src/types/table';
   import { useModal } from '/@/components/Modal';
   import Modal from './components/EditAdmin.vue';
-  import { getAdminList, changeAdminState, deleteAdmin } from '/@/api/manage/admin';
+  import { getAdminList, changeAdminState, deleteAdmin, getDepartments } from '/@/api/manage/admin';
   import { formatToDateTime } from '/@/utils/dateUtil';
   import { useMessage } from '/@/hooks/web/useMessage';
 
@@ -77,7 +77,7 @@
       const columns: BasicColumn[] = [
         { title: 'ID', dataIndex: 'id' },
         { title: '用户名', dataIndex: 'username' },
-        { title: '姓名', dataIndex: 'name' },
+        { title: '管理员名称', dataIndex: 'name' },
         { title: '创建时间', dataIndex: 'createdAt' },
         { title: '更新时间', dataIndex: 'updatedAt' },
         { title: '部门', dataIndex: 'deptName' },
@@ -94,33 +94,24 @@
         },
         schemas: [
           {
-            field: 'name',
-            component: 'Input',
-            label: '用户名',
-            colProps: {
-              span: 8,
-            },
-          },
-          {
-            field: 'status',
-            component: 'Select',
-            label: '启用状态',
+            field: 'deptId',
+            component: 'ApiSelect',
+            label: '部门',
             colProps: {
               span: 8,
             },
             componentProps: {
-              options: [
-                {
-                  label: '启用',
-                  value: '1',
-                  key: '1',
-                },
-                {
-                  label: '禁用',
-                  value: '2',
-                  key: '2',
-                },
-              ],
+              api: getDepartments,
+              labelField: 'title',
+              valueField: 'id',
+            },
+          },
+          {
+            field: 'name',
+            component: 'Input',
+            label: '管理员名称',
+            colProps: {
+              span: 8,
             },
           },
         ],
@@ -166,6 +157,12 @@
         });
       };
 
+      const handleClose = (visible: boolean) => {
+        if (!visible) {
+          reload();
+        }
+      };
+
       return {
         registerTable,
         registerModal,
@@ -173,6 +170,7 @@
         changeState,
         deleteAdminAction,
         open,
+        handleClose,
       };
     },
   });
