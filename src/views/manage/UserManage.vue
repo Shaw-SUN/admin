@@ -18,7 +18,7 @@
               label: '启用',
               popConfirm: {
                 title: '是否启用？',
-                confirm: changeUserState.bind(null, record.id),
+                confirm: changeState.bind(null, record.id),
               },
               ifShow: () => {
                 return record.isDisabled == '1';
@@ -28,7 +28,7 @@
               label: '禁用',
               popConfirm: {
                 title: '是否禁用？',
-                confirm: changeUserState.bind(null, record.id),
+                confirm: changeState.bind(null, record.id),
               },
               ifShow: () => {
                 return record.isDisabled == '0';
@@ -38,7 +38,7 @@
               label: '删除',
               popConfirm: {
                 title: '确认删除？',
-                confirm: deleteUser.bind(null, record.id),
+                confirm: deleteUserAction.bind(null, record.id),
               },
             },
           ]"
@@ -52,6 +52,9 @@
   import { BasicTable, useTable, FormProps, TableAction } from '/@/components/Table';
   import { BasicColumn } from '/@/components/Table/src/types/table';
   import { getUserList, changeUserState, deleteUser } from '/@/api/manage/user';
+  import { useMessage } from '/@/hooks/web/useMessage';
+
+  const { notification } = useMessage();
 
   export default defineComponent({
     components: { BasicTable, TableAction },
@@ -85,7 +88,7 @@
         ],
       };
 
-      const [registerTable] = useTable({
+      const [registerTable, { reload }] = useTable({
         api: getUserList,
         striped: false,
         showIndexColumn: false,
@@ -94,17 +97,32 @@
         columns: columns,
         rowKey: 'id',
         actionColumn: {
-          width: 250,
+          width: 150,
           title: '操作',
           dataIndex: 'action',
           slots: { customRender: 'action' },
         },
       });
 
+      // 启用
+      const changeState = (id: number) => {
+        changeUserState(id).then(() => {
+          notification.success({ message: '成功' });
+          reload();
+        });
+      };
+
+      // 删除
+      const deleteUserAction = (id: number) => {
+        deleteUser(id).then(() => {
+          notification.success({ message: '成功' });
+          reload();
+        });
+      };
       return {
         registerTable,
-        changeUserState,
-        deleteUser,
+        changeState,
+        deleteUserAction,
       };
     },
   });

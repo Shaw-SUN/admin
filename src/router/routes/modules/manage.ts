@@ -8,7 +8,7 @@ const userManage: AppRouteModule = {
   component: LAYOUT,
   redirect: '/manage/user',
   meta: {
-    orderNo: 2,
+    orderNo: 3,
     icon: 'mdi:user-key-outline',
     title: '系统管理',
   },

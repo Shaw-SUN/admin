@@ -8,6 +8,8 @@ enum Api {
   Edit = '/admin', //put
   ChangeState = '/admin/state/', //put id
   Delete = '/admin/', //delete id
+  Departments = '/department/dictionary',
+  Roles = '/role/dictionary',
 }
 
 // List
@@ -18,7 +20,8 @@ type AdminListParams = BasicPageParams & {
 };
 // 返回
 interface AdminListItem {
-  id: string;
+  id: number;
+  //...
 }
 type AdminListResult = BasicFetchResult<AdminListItem>;
 
@@ -30,6 +33,7 @@ export const getAdminList = (params: AdminListParams) => {
 // 返回
 type AdminDetailItem = {
   id: string;
+  //...
 };
 
 export const getAdminDetail = (id: number) => {
@@ -37,18 +41,19 @@ export const getAdminDetail = (id: number) => {
 };
 
 //ChangeState
-export const changeAdminState = (id: string) => {
-  return defHttp.put({ url: Api.ChangeState + id });
+export const changeAdminState = (id: number) => {
+  return defHttp.put({ url: Api.ChangeState + `${id}` });
 };
 
 //delete
-export const deleteAdmin = (id: string) => {
-  return defHttp.delete({ url: Api.Delete + id });
+export const deleteAdmin = (id: number) => {
+  return defHttp.delete({ url: Api.Delete + `${id}` });
 };
 
 //create
 
 type AdminCreateParams = {
+  id?: number;
   username: string;
   password: string;
   avatarUrl: string;
@@ -64,4 +69,24 @@ export const createAdmin = (params: AdminCreateParams) => {
 //edit
 export const editAdmin = (params: AdminCreateParams) => {
   return defHttp.put<AdminListResult>({ url: Api.Edit, params });
+};
+
+//departments
+interface DepartmentsItem {
+  id: number;
+  //...
+}
+type DepartmentsResult = BasicFetchResult<DepartmentsItem>;
+export const getDepartments = () => {
+  return defHttp.get<DepartmentsResult>({ url: Api.Departments });
+};
+
+//roles
+interface RolesItem {
+  id: number;
+  //...
+}
+type RolesResult = BasicFetchResult<RolesItem>;
+export const getRoles = () => {
+  return defHttp.get<RolesResult>({ url: Api.Roles });
 };

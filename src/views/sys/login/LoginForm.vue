@@ -61,14 +61,14 @@
         {{ t('sys.login.registerButton') }}
       </Button> -->
     </FormItem>
-    <Divider class="enter-x">{{ t('sys.login.otherSignIn') }}</Divider>
+    <!-- <Divider class="enter-x">{{ t('sys.login.otherSignIn') }}</Divider>
     <ARow class="enter-x">
       <ACol :span="24">
         <Button block @click="setLoginState(LoginStateEnum.MOBILE)">
           {{ t('sys.login.mobileSignInFormTitle') }}
         </Button>
       </ACol>
-    </ARow>
+    </ARow> -->
   </Form>
   <!-- <ACol :md="8" :xs="24" class="!my-2 !md:my-0 xs:mx-0 md:mx-2">
         <Button block @click="setLoginState(LoginStateEnum.QR_CODE)">
@@ -92,7 +92,7 @@
 <script lang="ts" setup>
   import { reactive, ref, unref, computed, onMounted } from 'vue';
 
-  import { Form, Input, Button, Col, Row, Divider } from 'ant-design-vue';
+  import { Form, Input, Button, Col, Row } from 'ant-design-vue';
   /*   import {
     GithubFilled,
     WechatFilled,
@@ -124,7 +124,7 @@
   const { prefixCls } = useDesign('login');
   const userStore = useUserStore();
 
-  const { setLoginState, getLoginState } = useLoginState();
+  const { getLoginState } = useLoginState();
   const { getFormRules } = useFormRules();
 
   const formRef = ref();

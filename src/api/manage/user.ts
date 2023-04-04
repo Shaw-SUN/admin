@@ -16,6 +16,7 @@ type UserListParams = BasicPageParams & {
 // 返回
 interface UserListItem {
   id: number;
+  // ....
 }
 type UserListResult = BasicFetchResult<UserListItem>;
 
