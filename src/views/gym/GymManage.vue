@@ -15,7 +15,7 @@
       </template>
       <template #action="{ record }">
         <span style="color: green" v-if="record.state == 1">已通过</span>
-        <a-button type="link" v-if="record.state == 2">待审核</a-button>
+        <a-button color="warning" type="link" v-if="record.state == 2"><u>待审核</u></a-button>
         <span style="color: red" v-else-if="record.state == 3">已驳回</span>
       </template>
     </BasicTable>
