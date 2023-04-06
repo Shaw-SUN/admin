@@ -21,6 +21,14 @@ const userManage: AppRouteModule = {
         title: '审批管理',
       },
     },
+    {
+      path: 'order',
+      name: 'OrderManage',
+      component: () => import('/@/views/gym/OrderManage.vue'),
+      meta: {
+        title: '订单管理',
+      },
+    },
   ],
 };
 

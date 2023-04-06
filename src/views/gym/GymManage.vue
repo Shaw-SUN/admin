@@ -19,6 +19,17 @@
           ><u>待审核</u></a-button
         >
         <span style="color: red" v-else-if="record.state == 3">已驳回</span>
+        <TableAction
+          :actions="[
+            {
+              label: '注销',
+              popConfirm: {
+                title: '确认注销？',
+                confirm: cancelGymAction.bind(null, record.id),
+              },
+            },
+          ]"
+        />
       </template>
     </BasicTable>
     <Modal @register="registerModal" @visible-change="handleClose" />
@@ -26,19 +37,19 @@
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import { BasicTable, useTable, FormProps } from '/@/components/Table';
+  import { BasicTable, useTable, FormProps, TableAction } from '/@/components/Table';
   import { BasicColumn } from '/@/components/Table/src/types/table';
   import { useModal } from '/@/components/Modal';
   import Modal from './components/Approve.vue';
   import { formatToDateTime } from '/@/utils/dateUtil';
 
-  import { getGymList } from '/@/api/gym/gym';
-  //import { useMessage } from '/@/hooks/web/useMessage';
+  import { getGymList, cancelGym } from '/@/api/gym/gym';
+  import { useMessage } from '/@/hooks/web/useMessage';
 
-  //const { notification } = useMessage();
+  const { notification } = useMessage();
 
   export default defineComponent({
-    components: { BasicTable, Modal },
+    components: { BasicTable, Modal, TableAction },
     setup() {
       // 表头
       const columns: BasicColumn[] = [
@@ -106,7 +117,7 @@
         rowKey: 'id',
         actionColumn: {
           width: 150,
-          title: '状态',
+          title: '操作',
           dataIndex: 'action',
           slots: { customRender: 'action' },
         },
@@ -123,12 +134,20 @@
         }
       };
 
+      const cancelGymAction = (id: number) => {
+        cancelGym(id).then(() => {
+          notification.success({ message: '成功' });
+          reload();
+        });
+      };
+
       return {
         registerTable,
         formatToDateTime,
         registerModal,
         open,
         handleClose,
+        cancelGymAction,
       };
     },
   });

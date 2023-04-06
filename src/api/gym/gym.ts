@@ -5,6 +5,8 @@ enum Api {
   List = '/gym/list', //get
   Detail = '/gym/', //get id
   Audit = '/gym/audit', //post
+  Cancel = '/gym/cancel/', //post id
+  OrderList = '/order/list',
 }
 
 // List
@@ -45,4 +47,29 @@ export const getGymDetail = (id: number) => {
 //audit
 export const auditGym = (params) => {
   return defHttp.post({ url: Api.Audit, params });
+};
+
+//Cancel
+export const cancelGym = (id: number) => {
+  return defHttp.post({ url: Api.Cancel + `${id}` });
+};
+
+// OrderList
+// 请求参数
+type OrderListParams = BasicPageParams & {
+  end?: number;
+  start?: number;
+  gymName?: string;
+  goodName?: string;
+  state?: number;
+};
+// 返回
+interface OrderListItem {
+  id: number;
+  // ....
+}
+type OrderListResult = BasicFetchResult<OrderListItem>;
+
+export const getOrderList = (params: OrderListParams) => {
+  return defHttp.get<OrderListResult>({ url: Api.OrderList, params });
 };
