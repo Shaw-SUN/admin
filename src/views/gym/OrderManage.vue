@@ -36,7 +36,7 @@
         { title: '商品名', dataIndex: 'goodName' },
         { title: '健身房', dataIndex: 'gymName' },
         { title: '价格（元）', dataIndex: 'price' },
-        { title: '下单用户', dataIndex: 'username' },
+        { title: '下单用户', dataIndex: 'userName' },
         { title: '下单时间', dataIndex: 'createdAt' },
         { title: '状态', dataIndex: 'state' },
       ];
