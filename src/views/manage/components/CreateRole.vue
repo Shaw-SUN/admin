@@ -1,5 +1,5 @@
 <template>
-  <BasicModal v-bind="$attrs" title="新增部门" @register="register" @ok="submit()" destroyOnClose>
+  <BasicModal v-bind="$attrs" title="新增角色" @register="register" @ok="submit()" destroyOnClose>
     <div class="pt-3px pr-3px">
       <BasicForm @register="registerForm" @submit="handleSubmit()" />
     </div>

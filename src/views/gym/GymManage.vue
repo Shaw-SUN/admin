@@ -12,13 +12,13 @@
         <template v-if="column.key === 'updatedAt'">
           <span>{{ formatToDateTime(record.updatedAt * 1000) }}</span>
         </template>
+        <template v-if="column.key === 'state'">
+          <span style="color: green" v-if="record.state == 1">已通过</span>
+          <span style="color: orange" v-else-if="record.state == 2">待审核</span>
+          <span style="color: red" v-else-if="record.state == 3">已驳回</span>
+        </template>
       </template>
       <template #action="{ record }">
-        <span style="color: green" v-if="record.state == 1">已通过</span>
-        <a-button color="warning" type="link" v-if="record.state == 2" @click="open(record.id)"
-          ><u>待审核</u></a-button
-        >
-        <span style="color: red" v-else-if="record.state == 3">已驳回</span>
         <TableAction
           :actions="[
             {
@@ -26,6 +26,16 @@
               popConfirm: {
                 title: '确认注销？',
                 confirm: cancelGymAction.bind(null, record.id),
+              },
+              ifShow: () => {
+                return record.state == 1;
+              },
+            },
+            {
+              label: '详情',
+              onClick: open.bind(null, record.id),
+              ifShow: () => {
+                return record.state == 2;
               },
             },
           ]"
@@ -59,6 +69,7 @@
         { title: '联系电话', dataIndex: 'phone' },
         { title: '创建时间', dataIndex: 'createdAt' },
         { title: '更新时间', dataIndex: 'updatedAt' },
+        { title: '状态', dataIndex: 'state' },
       ];
 
       // 查询

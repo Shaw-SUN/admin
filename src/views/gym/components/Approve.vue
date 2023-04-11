@@ -7,21 +7,18 @@
         <template #f3>{{ detail.phone }}</template>
         <template #f4>{{ detail.time }}</template>
         <template #f5>{{ detail.area }}平方米</template>
+        <template #f10>
+          <a-map height="300px" width="300px" :x="detail.longitude" :y="detail.latitude" />
+        </template>
         <template #f6>{{ detail.content }}</template>
         <template #f7>
-          <ImagePreview
-            :imageList="detail.logoUrl instanceof Array ? detail.logoUrl : [detail.logoUrl]"
-          />
+          <ImagePreview :imageList="detail.logoUrlList" />
         </template>
         <template #f8>
-          <ImagePreview
-            :imageList="detail.detailUrl instanceof Array ? detail.detailUrl : [detail.detailUrl]"
-          />
+          <ImagePreview :imageList="detail.detailUrlList" />
         </template>
         <template #f9>
-          <ImagePreview
-            :imageList="detail.auditUrl instanceof Array ? detail.auditUrl : [detail.auditUrl]"
-          />
+          <ImagePreview :imageList="detail.auditUrlList" />
         </template>
       </BasicForm>
     </div>
@@ -34,6 +31,7 @@
   import { getGymDetail, auditGym } from '/@/api/gym/gym';
   import { ImagePreview } from '/@/components/Preview/index';
   import { useMessage } from '/@/hooks/web/useMessage';
+  import AMap from '../components/Gaode.vue';
 
   const { notification } = useMessage();
 
@@ -79,6 +77,15 @@
       component: 'Input',
       label: '占地面积',
       slot: 'f5',
+      colProps: {
+        span: 20,
+      },
+    },
+    {
+      field: 'field10',
+      component: 'Input',
+      label: '地图点位',
+      slot: 'f10',
       colProps: {
         span: 20,
       },
@@ -162,7 +169,7 @@
     },
   ];
   export default defineComponent({
-    components: { BasicModal, BasicForm, ImagePreview },
+    components: { BasicModal, BasicForm, ImagePreview, AMap },
     setup() {
       const [registerForm, { getFieldsValue, submit }] = useForm({
         labelWidth: 100,
@@ -175,9 +182,16 @@
       });
 
       const detail = ref({});
+      detail.value.auditUrlList = [];
+      detail.value.logoUrlList = [];
+      detail.value.detailUrlList = [];
+
       function onDataReceive(data) {
         getGymDetail(data.id).then((res) => {
           detail.value = { ...res };
+          detail.value.logoUrlList = detail.value.logoUrl.split(',');
+          detail.value.auditUrlList = detail.value.auditUrl.split(',');
+          detail.value.detailUrlList = detail.value.detailUrl.split(',');
         });
       }
 
