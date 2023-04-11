@@ -33,10 +33,7 @@
             },
             {
               label: '详情',
-              onClick: open.bind(null, record.id),
-              ifShow: () => {
-                return record.state == 2;
-              },
+              onClick: open.bind(null, record.id, record.state),
             },
           ]"
         />
@@ -136,8 +133,8 @@
       // 弹窗
       const [registerModal, { openModal }] = useModal();
       // 新增/编辑
-      const open = (id: number) => {
-        openModal(true, { id: id });
+      const open = (id: number, state: number) => {
+        openModal(true, { id: id, state: state });
       };
       const handleClose = (visible: boolean) => {
         if (!visible) {

@@ -142,6 +142,9 @@
         span: 20,
       },
       required: true,
+      ifShow: () => {
+        return isApproved.value == 2;
+      },
       componentProps: {
         options: [
           {
@@ -168,6 +171,7 @@
       },
     },
   ];
+  const isApproved = ref(null);
   export default defineComponent({
     components: { BasicModal, BasicForm, ImagePreview, AMap },
     setup() {
@@ -187,6 +191,7 @@
       detail.value.detailUrlList = [];
 
       function onDataReceive(data) {
+        isApproved.value = data.state;
         getGymDetail(data.id).then((res) => {
           detail.value = { ...res };
           detail.value.logoUrlList = detail.value.logoUrl.split(',');
@@ -196,12 +201,16 @@
       }
 
       const handleSubmit = () => {
-        const params = getFieldsValue();
-        params.id = detail.value.id;
-        auditGym(params).then(() => {
-          notification.success({ message: '成功' });
+        if (isApproved.value == 2) {
+          const params = getFieldsValue();
+          params.id = detail.value.id;
+          auditGym(params).then(() => {
+            notification.success({ message: '成功' });
+            closeModal();
+          });
+        } else {
           closeModal();
-        });
+        }
       };
 
       return {
@@ -211,6 +220,7 @@
         handleSubmit,
         submit,
         detail,
+        isApproved,
       };
     },
   });

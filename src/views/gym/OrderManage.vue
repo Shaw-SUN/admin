@@ -1,6 +1,21 @@
 <template>
   <div>
-    <BasicTable @register="registerTable" />
+    <BasicTable @register="registerTable">
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'createdAt'">
+          <span>{{ formatToDateTime(record.createdAt * 1000) }}</span>
+        </template>
+        <template v-if="column.key === 'state'">
+          <span v-if="record.state == 1" style="color: blue">未核销</span>
+          <span v-else-if="record.state == 2" style="color: green">已核销</span>
+          <span v-else-if="record.state == 3" style="color: orange">已取消</span>
+        </template>
+        <template v-if="column.key === 'isComment'">
+          <span v-if="record.isComment == 0" style="color: blue">未评论</span>
+          <span v-else-if="record.isComment == 1" style="color: green">已评论</span>
+        </template>
+      </template>
+    </BasicTable>
   </div>
 </template>
 <script lang="ts">
@@ -22,11 +37,12 @@
       // 表头
       const columns: BasicColumn[] = [
         { title: 'ID', dataIndex: 'id' },
-        { title: '名称', dataIndex: 'name' },
-        { title: '地址', dataIndex: 'address' },
-        { title: '联系电话', dataIndex: 'phone' },
-        { title: '创建时间', dataIndex: 'createdAt' },
-        { title: '更新时间', dataIndex: 'updatedAt' },
+        { title: '商品名', dataIndex: 'goodName' },
+        { title: '健身房', dataIndex: 'gymName' },
+        { title: '价格（元）', dataIndex: 'price' },
+        { title: '下单时间', dataIndex: 'createdAt' },
+        { title: '状态', dataIndex: 'state' },
+        { title: '评论状态', dataIndex: 'isComment' },
       ];
 
       // 查询
@@ -34,30 +50,36 @@
         labelWidth: 100,
         showAdvancedButton: false,
         actionColOptions: {
-          span: 8,
+          span: 16,
         },
         schemas: [
           {
             field: 'state',
             component: 'Select',
-            label: '审核状态',
+            label: '状态',
+            defaultValue: '0',
             colProps: {
               span: 8,
             },
             componentProps: {
               options: [
                 {
-                  label: '已通过',
+                  label: '全部',
+                  value: '0',
+                  key: '0',
+                },
+                {
+                  label: '未核销',
                   value: '1',
                   key: '1',
                 },
                 {
-                  label: '待审核',
+                  label: '已核销',
                   value: '2',
                   key: '2',
                 },
                 {
-                  label: '已驳回',
+                  label: '已取消',
                   value: '3',
                   key: '3',
                 },
@@ -65,9 +87,31 @@
             },
           },
           {
-            field: 'name',
+            field: '[start, end]',
+            label: '时间',
+            component: 'RangePicker',
+            colProps: {
+              span: 8,
+            },
+            componentProps: {
+              format: 'YYYY-MM-DD HH:mm:ss',
+              placeholder: ['开始时间', '结束时间'],
+              showTime: { format: 'HH:mm:ss' },
+              valueFormat: 'X',
+            },
+          },
+          {
+            field: 'gymName',
             component: 'Input',
-            label: '名称',
+            label: '健身房名称',
+            colProps: {
+              span: 8,
+            },
+          },
+          {
+            field: 'goodName',
+            component: 'Input',
+            label: '商品名称',
             colProps: {
               span: 8,
             },
