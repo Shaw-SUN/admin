@@ -133,7 +133,7 @@
         const params = getFieldsValue();
         params.avatarUrl = params.avatarUrl.toString();
         if (id.value) {
-          params.id = id;
+          params.id = id.value;
           editAdmin(params).then(() => {
             notification.success({ message: '成功' });
             closeModal();
