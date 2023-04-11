@@ -10,10 +10,6 @@
           <span v-else-if="record.state == 2" style="color: green">已核销</span>
           <span v-else-if="record.state == 3" style="color: orange">已取消</span>
         </template>
-        <template v-if="column.key === 'isComment'">
-          <span v-if="record.isComment == 0" style="color: blue">未评论</span>
-          <span v-else-if="record.isComment == 1" style="color: green">已评论</span>
-        </template>
       </template>
     </BasicTable>
   </div>
@@ -40,9 +36,9 @@
         { title: '商品名', dataIndex: 'goodName' },
         { title: '健身房', dataIndex: 'gymName' },
         { title: '价格（元）', dataIndex: 'price' },
+        { title: '下单用户', dataIndex: 'username' },
         { title: '下单时间', dataIndex: 'createdAt' },
         { title: '状态', dataIndex: 'state' },
-        { title: '评论状态', dataIndex: 'isComment' },
       ];
 
       // 查询
