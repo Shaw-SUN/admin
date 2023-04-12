@@ -186,7 +186,7 @@
     }
 
     input:not([type='checkbox']) {
-      /* min-width: 360px; */
+      min-width: 200px;
 
       @media (max-width: @screen-xl) {
         min-width: 320px;

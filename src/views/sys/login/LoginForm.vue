@@ -27,7 +27,7 @@
     <!-- 图像验证码 -->
     <FormItem name="imgCode" class="enter-x">
       <ARow :gutter="16">
-        <ACol>
+        <ACol style="max-width: 230px">
           <Input size="large" v-model:value="formData.imgCode" :placeholder="'验证码'" />
         </ACol>
         <ACol @click="getCodeImg"><img :src="codeImg" alt="" /></ACol>
