@@ -28,8 +28,16 @@
                 confirm: cancelGymAction.bind(null, record.id),
               },
               ifShow: () => {
-                return record.state == 1;
+                return record.state == 1 && record.isCancel != 1;
               },
+            },
+            {
+              label: '已注销',
+              ifShow: () => {
+                return record.state == 1 && record.isCancel == 1;
+              },
+              isDisabled: true,
+              color: 'error',
             },
             {
               label: '详情',
